@@ -1,0 +1,36 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { NAV, EDUCATION, SOCIALS, PHONE_DISPLAY, PHONE_HREF, EMAIL, EMAIL_HREF, ADDRESS, SOON } from "../data/site";
+---
+<footer class="site-footer" data-rec="R-104">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <img src="/brand/pipl-lyceum.svg" alt="PIPL Lyceum" width="117" height="77" />
+      <p>Середовище, що дає результат!</p>
+    </div>
+    <nav class="site-footer__col" aria-label="Ліцей">
+      <p class="site-footer__title">Ліцей</p>
+      <ul role="list">{NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+    </nav>
+    <div class="site-footer__col">
+      <p class="site-footer__title">Освіта</p>
+      <ul role="list">{EDUCATION.map((e) => <li><FutureLink note={SOON}>{e}</FutureLink></li>)}</ul>
+    </div>
+    <div class="site-footer__col">
+      <p class="site-footer__title">Контакти</p>
+      <ul role="list">
+        <li><a href={PHONE_HREF}>{PHONE_DISPLAY}</a></li>
+        <li><a href={EMAIL_HREF}>{EMAIL}</a></li>
+        <li>{ADDRESS}</li>
+      </ul>
+      <ul class="site-footer__socials" role="list">
+        {SOCIALS.map((s) => <li><a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="container site-footer__legal">
+    <p>© 2026 PIPL Lyceum</p>
+    <FutureLink note={SOON}>Політика конфіденційності</FutureLink>
+    <FutureLink note={SOON}>Політика cookie</FutureLink>
+  </div>
+</footer>

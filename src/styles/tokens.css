@@ -1,0 +1,61 @@
+/* Hallmark · shape: grade-scale index (one path 0–11 with an IB fork, nine sections) · genre: editorial · theme: custom · job: join · idea: "Тринадцять років на одній шкалі: класи 0–11 з розвилкою IB, кожен блок відповідає, що буде з дитиною на цьому відрізку" · vibe: "precise academic, warm orange, calm confident"
+ * paper: #FFFFFF · surface: absolute · accent: #FF7F00 · display: Fira Sans Extra Condensed · body: Literata · hero: typographic H1 on nine columns, enrolment and call on the right, full-width clickable grade scale 0–11 with the IB lane · nav: white sticky bar, six anchors, phone and tour button; mobile call button, burger, bottom action bar · footer: light grey, same menu as header, contacts and confirmed socials · imagery: client photos · signature: the grade scale with the IB fork, used three times (choice, programme map, admission steps)
+ * axes: white/extra-condensed-grotesk/orange-fill · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · finish F5 · .call-btn: concept.md «Навігація» sets a round 44 px call button in the mobile header; kept · F4: one primary recipe (.btn--primary); the call button and the mobile action bar are the concept's fixed phone shortcuts · 42: footer named in the stamp (grey mirror of the header menu) */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S (sections can drift into lists), each block keeps one big figure or the scale module and short copy */
+/* Hallmark · waive 7b · --color-bg #FFFFFF · concept.md «Look — фон» approves pure white with cool grey #EEEFF1 for density changes; precise academic tone, not a cream page */
+/* Hallmark · waive 23 · .results__fill, .price__num · concept.md: the orange band of results and orange figures on graphite are the approved signature fills (posture committed) */
+/* Hallmark · waive 39b · a.grade · the grade scale is the page signature (concept.md «Перший екран»: digits as tall cells of a ruler), not a marketing button; every cell is ≥ 44 px */
+/* Hallmark · waive 59 · hero → results 49 px · the orange results band starts edge to edge right under the hero scale on purpose (concept.md «Зміна щільності»); the band itself carries 128 px inside, and the hero must fit 1440×900 */
+/* Client design tokens: from design/concept.md (veon-concept: colors, fonts). */
+:root {
+  /* Palette (concept.md, «Палітра») */
+  --color-bg: #FFFFFF;
+  --color-surface: #EEEFF1;
+  --color-text: #16171B;
+  --color-muted: #565B64;
+  --color-accent: #FF7F00;
+  --color-accent-text: #B34A00;
+  --color-border: #7A7F89;
+  --color-accent-ink: #16171B;
+  --color-ink: var(--color-text);
+  --color-on-ink: var(--color-bg);
+  --color-on-ink-soft: var(--color-surface);
+
+  /* Type */
+  --font-display: "Fira Sans Extra Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "Literata Variable", "Literata", Georgia, "Times New Roman", serif;
+  --fs-giant: clamp(4.5rem, 1.6rem + 12.2vw, 12.5rem);   /* 72 → 200 */
+  --fs-h1: clamp(2.875rem, 1.6rem + 5.2vw, 6.5rem);       /* 46 → 104 */
+  --fs-h2: clamp(2.375rem, 1.75rem + 2.4vw, 4rem);        /* 38 → 64 */
+  --fs-h3: clamp(1.25rem, 1.15rem + .4vw, 1.5rem);        /* 20 → 24 */
+  --fs-body: clamp(1.0625rem, 1.03rem + .14vw, 1.125rem); /* 17 → 18 */
+  --fs-small: .9375rem;                                    /* 15 */
+  --lh-tight: .92;
+  --lh-body: 1.55;
+  --measure: 64ch;
+
+  /* Grid and rhythm (base 8) */
+  --cols: 4;
+  --gutter: 12px;
+  --pad: 16px;
+  --space: var(--pad);
+  --container: 1312px;
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px; --s6: 64px; --s7: 96px; --s8: 128px;
+  --block-y: 72px;
+  --header-h: 60px;
+  --bar-h: 56px;
+
+  /* Shape and motion */
+  --radius: 2px;
+  --btn-h: 56px;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 600ms;
+  --dur-fast: 160ms;
+}
+@media (min-width: 768px) {
+  :root { --cols: 8; --gutter: 24px; --pad: 32px; --block-y: 96px; --btn-h: 52px; --header-h: 72px; }
+}
+@media (min-width: 1200px) {
+  :root { --cols: 12; --pad: 64px; --block-y: 128px; }
+}

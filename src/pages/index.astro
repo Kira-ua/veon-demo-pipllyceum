@@ -1,0 +1,392 @@
+﻿---
+// Homepage DEMO — PIPL Lyceum. Structure: design/concept.md §8 and ux/demo-home.md §5.
+// Facts only from veon/client.json and veon/research/pages/*.txt.
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import FutureLink from "../components/FutureLink.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import GradeScale from "../components/GradeScale.astro";
+import { PHONE_DISPLAY, PHONE_HREF, EMAIL, EMAIL_HREF, ADDRESS, SOON, SOCIALS } from "../data/site";
+import dayPhoto from "../assets/photos/day-students.webp";
+import ibPhoto from "../assets/photos/ib-student.webp";
+import aboutPhoto from "../assets/photos/about-reading.webp";
+import "@fontsource/fira-sans-extra-condensed/600.css";
+import "@fontsource/fira-sans-extra-condensed/700.css";
+import "@fontsource/fira-sans-extra-condensed/800.css";
+import "@fontsource-variable/literata/opsz.css";
+import "@fontsource-variable/literata/opsz-italic.css";
+import "../styles/site.css";
+
+const title = "Приватний ліцей у Львові з IB, 0–11 класи — PIPL Lyceum";
+const description = "Приватний ліцей повного дня у Львові: 0–11 класи та IB Diploma Programme. 1 місце у Львові за НМТ 2026 (education.ua). Набір 2026/27 — екскурсія і пробний день.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["School", "EducationalOrganization"],
+      name: "PIPL Lyceum",
+      alternateName: "Prime Innovative Private Lviv Lyceum",
+      slogan: "Середовище, що дає результат!",
+      telephone: "+380674081655",
+      email: EMAIL,
+      address: { "@type": "PostalAddress", streetAddress: "вул. Наукова, 5а", addressLocality: "Львів", addressCountry: "UA" },
+      sameAs: SOCIALS.filter((s) => !s.href.startsWith("https://t.me")).map((s) => s.href),
+    },
+    { "@type": "WebSite", name: "PIPL Lyceum", inLanguage: "uk" },
+  ],
+};
+
+const news = [
+  { date: "10.11.2026", iso: "2026-11-10", title: "Перший тиждень другої чверті у PIPL Lyceum: інтелектуальні перемоги, мистецтво та мовні виклики" },
+  { date: "06.11.2026", iso: "2026-11-06", title: "Ексклюзивно для PIPL Lyceum: як пройшла зустріч із University of Exeter" },
+  { date: "26.10.2026", iso: "2026-10-26", title: "Фінішна пряма перед канікулами: чим запам'ятався останній тиждень чверті у PIPL Lyceum" },
+];
+---
+<Base lang="uk" title={title} description={description}>
+  <Fragment slot="head">
+    <link rel="icon" href="/brand/pipl-lyceum.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1. hero -->
+  <Section id="hero" rec="R-101,MR-003,G-R004" class="hero">
+    <div class="container hero__grid">
+      <h1 class="hero__title">Приватний ліцей повного дня <span class="nowrap">у Львові —</span> від нульового класу до диплома IB</h1>
+      <div class="hero__aside">
+        <p class="hero__lead"><strong>Набір на 2026/27 відкрито: 0–11 класи та IB DP.</strong> Запрошуємо на індивідуальну екскурсію і безкоштовний пробний день.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href={PHONE_HREF}>Записатися на екскурсію</a>
+          <a class="text-link hero__how" href="#admission">Як вступити</a>
+        </div>
+        <a class="hero__phone" href={PHONE_HREF}>{PHONE_DISPLAY}</a>
+      </div>
+    </div>
+    <div class="container">
+      <GradeScale />
+    </div>
+  </Section>
+
+  <!-- 2. results -->
+  <Section id="results" class="results" label="Результати">
+    <div class="results__fill" aria-hidden="true" data-inview></div>
+    <div class="container results__grid">
+      <h2 class="h2 results__title">Середовище, що дає результат</h2>
+      <div class="results__figure">
+        <p class="results__num">169,56</p>
+        <p class="results__caption">Середній бал НМТ 2026 — 1 місце у Львові та в області, 18 в Україні.</p>
+        <p class="results__source">Рейтинг education.ua, дані оновлено 03.08.2026.</p>
+      </div>
+      <ul class="results__facts" role="list">
+        <li><strong>IB World School з 1 липня 2024 року.</strong> Ліцей авторизований на IB Diploma Programme, мови навчання — англійська й українська.</li>
+        <li><strong>357 учнів і 73 працівники:</strong> на одного працівника — 5 учнів. За даними ЄДЕБО.</li>
+      </ul>
+    </div>
+  </Section>
+
+  <!-- 3. programs -->
+  <Section id="programs" class="programs">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Програми</h2>
+        <p class="lead">Один шлях від нульового класу до випуску. У 10 класі — вибір: українська програма або IB Diploma Programme англійською.</p>
+      </div>
+
+      <div class="map" aria-hidden="true">
+        <ol class="map__ticks" role="list">{Array.from({ length: 12 }, (_, i) => <li>{i}</li>)}</ol>
+        <div class="map__bar map__bar--primary"></div>
+        <div class="map__bar map__bar--lyceum"></div>
+        <div class="map__fork" data-inview><span class="map__fork-v"></span><span class="map__fork-h"></span></div>
+      </div>
+
+      <div class="programs__grid">
+        <article class="program program--primary">
+          <h3 class="h3">Початкова школа PIPL</h3>
+          <p class="program__meta">0–4 класи, українською</p>
+          <p>Повний день <span class="nowrap">08:30–19:00</span> з нульового класу. Для 0–3 класів замість тестів — індивідуальна зустріч із психологинею, щоб забезпечити дитині комфортний старт.</p>
+          <FutureLink note={SOON} class="program__more">Про початкову школу</FutureLink>
+        </article>
+
+        <article class="program program--lyceum">
+          <h3 class="h3">Ліцей PIPL, українська програма</h3>
+          <p class="program__meta">5–11 класи, українською</p>
+          <p>Напрями STEM, Business, Cybersecurity, Arts, Cambridge і підготовка до НМТ. Формаційна програма й менторський супровід ведуть кожну дитину сім років — від адаптації в 5 класі до випуску.</p>
+          <FutureLink note={SOON} class="program__more">Про ліцей PIPL</FutureLink>
+        </article>
+
+        <article class="program program--ib">
+          <Picture
+            src={ibPhoto}
+            formats={["avif"]}
+            fallbackFormat="webp"
+            widths={[360, 560, 800]}
+            sizes="(min-width: 1200px) 420px, (min-width: 768px) 45vw, 100vw"
+            alt="Учениця IB з підручником Business Management серед однокласників у футболках PIPL"
+            loading="lazy"
+            decoding="async"
+            class="program__photo"
+            data-rec="R-110,R-201,R-202"
+          />
+          <h3 class="h3">IB Diploma Programme</h3>
+          <p class="program__meta">10–11 класи, англійською</p>
+          <p>Дворічна програма: 6 предметів і Теорія знань, фінальні екзамени оцінюють міжнародні екзаменатори. Міжнародно визнаний диплом для вступу до університетів за кордоном.</p>
+          <div class="program__actions">
+            <a class="btn btn--secondary" href={PHONE_HREF}>Консультація щодо IB</a>
+            <FutureLink note={SOON} class="program__more">Про IB Programme</FutureLink>
+          </div>
+        </article>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 4. day -->
+  <Section id="day" class="day">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Повний день у ліцеї</h2>
+      </div>
+      <div class="day__clock">
+        <p class="day__time">08:30</p>
+        <span class="day__line" aria-hidden="true"></span>
+        <p class="day__time">19:00</p>
+        <p class="day__note">Повний день входить у вартість навчання. У другій половині дня — заняття в гуртках і активне дозвілля.</p>
+      </div>
+    </div>
+    <figure class="day__photo">
+      <Picture
+        src={dayPhoto}
+        formats={["avif"]}
+            fallbackFormat="webp"
+        widths={[480, 800, 1200, 1600, 2400]}
+        sizes="100vw"
+        alt="Учні та вчителі PIPL Lyceum разом у студії, з підручниками в руках"
+        loading="lazy"
+        decoding="async"
+        data-rec="R-110,R-201,R-202"
+      />
+    </figure>
+    <div class="container day__grid">
+      <div class="day__group">
+        <h3 class="h3">Навчання</h3>
+        <ul class="list" role="list">
+          <li>Базові предмети МОН, авторські курси, факультативи і проєктна робота</li>
+          <li>Підготовка до іспитів Cambridge з англійської та до НМТ</li>
+          <li>Підручники, канцелярія, техніка і власне робоче місце</li>
+          <li>Менторський індивідуальний супровід і консультація психолога</li>
+        </ul>
+      </div>
+      <div class="day__group">
+        <h3 class="h3">Турбота і безпека</h3>
+        <ul class="list" role="list">
+          <li>Закрита територія, охорона, відеоспостереження, укриття</li>
+          <li>Фруктовий перекус і питна вода у вільному доступі</li>
+          <li>Харчування на вибір: сніданок, обід, підвечірок, вечеря</li>
+          <li>Батьки бачать камери спостереження в мобільній платформі GlobalKids</li>
+        </ul>
+        <FutureLink note={SOON}>Застосунок для батьків</FutureLink>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 5. price -->
+  <Section id="price" rec="R-105,S-R009" class="price">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Вартість навчання</h2>
+      </div>
+      <div class="price__grid">
+        <div class="price__main">
+          <h3 class="h3">Українська програма</h3>
+          <p class="price__sum"><span class="price__num">7 500</span> <span class="price__unit">у.о. за рік</span></p>
+          <p class="price__alt">або 12 платежів від <strong>600 у.о.</strong> (від 27 000 грн)</p>
+          <p class="price__note">За курсом НБУ на день оплати. Окремо — одноразовий вступний внесок 500 у.о.</p>
+          <p class="price__incl">У вартість входить повний день <span class="nowrap">08:30–19:00</span>, підручники, канцелярія, техніка, базові предмети МОН, авторські курси, підготовка до Cambridge і НМТ, консультації психолога, менторський супровід.</p>
+        </div>
+        <div class="price__ib">
+          <h3 class="h3">IB Diploma Programme</h3>
+          <dl class="price__rows">
+            <div><dt>Для учнів PIPL Lyceum</dt><dd><span class="price__mid">12 000</span> у.о. за рік, від 1 200 у.о. на місяць</dd></div>
+            <div><dt>Для вступників з інших шкіл</dt><dd><span class="price__mid">15 000</span> у.о. за рік, від 1 500 у.о. на місяць</dd></div>
+          </dl>
+          <p class="price__note">Остаточну ціну, розтермінування і можливі знижки уточнює менеджер.</p>
+          <div class="price__actions">
+            <a class="btn btn--primary" href={PHONE_HREF}>Уточнити вартість</a>
+            <a class="price__phone" href={PHONE_HREF}>{PHONE_DISPLAY}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 6. admission -->
+  <Section id="admission" class="admission">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Як вступити</h2>
+        <p class="lead">Чотири кроки. Перший безпечний крок — знайомство: екскурсія для батьків і безкоштовний пробний день для дитини.</p>
+      </div>
+      <ol class="steps" role="list">
+        <li class="step">
+          <span class="step__num" aria-hidden="true">1</span>
+          <h3 class="h3">Знайомство</h3>
+          <p>Зателефонуйте нам: менеджер розповість усе необхідне і запросить на індивідуальну екскурсію або День відкритих дверей.</p>
+        </li>
+        <li class="step step--accent">
+          <span class="step__num" aria-hidden="true">2</span>
+          <h3 class="h3">Вступне випробування і безкоштовний пробний день</h3>
+          <p>Дитина проживає день у своєму майбутньому класі. 4–11 класи складають тести з української, англійської та математики, усі — зустрічаються з психологинею. Рішення ухвалюємо втрьох: дитина, батьки, ліцей.</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">3</span>
+          <h3 class="h3">Договір</h3>
+          <p>Форма бронювання, вступний внесок, договір і документи. Вітаємо, вас зараховано!</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">4</span>
+          <h3 class="h3">Кабінет</h3>
+          <p>Особистий кабінет ліцеїста і батьків у платформі GlobalKids, доступ до камер.</p>
+        </li>
+      </ol>
+      <div class="admission__actions">
+        <a class="btn btn--primary" href={PHONE_HREF}>Записатися на пробний день</a>
+        <p class="admission__mail">Або напишіть: <a class="text-link" href={EMAIL_HREF}>{EMAIL}</a></p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 7. about -->
+  <Section id="about" class="about">
+    <div class="container about__grid">
+      <div class="about__text">
+        <h2 class="h2">Про ліцей</h2>
+        <p class="about__mission">Наша місія — виховання нової української інтелектуальної еліти.</p>
+        <ul class="about__values" role="list" aria-label="Цінності">
+          <li>Свобода</li><li>Мислення</li><li>Стосунки</li><li>Розвиток</li>
+        </ul>
+        <blockquote class="about__quote">
+          <p>«Ми творимо освітнє середовище, яке гуртує навколо себе сильну ціннісну спільноту дорослих і дітей.»</p>
+          <footer>Надія та Михайло Дубченки, засновники. Мережа почалася у 2018 році з ThinkGlobalLviv, згодом — PIPL Lyceum і GlobalKids.</footer>
+        </blockquote>
+        <FutureLink note={SOON}>Більше про ліцей і команду</FutureLink>
+      </div>
+      <figure class="about__photo">
+        <Picture
+          src={aboutPhoto}
+          formats={["avif"]}
+            fallbackFormat="webp"
+          widths={[360, 560, 800]}
+          sizes="(min-width: 1200px) 420px, (min-width: 768px) 40vw, 100vw"
+          alt="Дві ліцеїстки читають книжку на кріслах-мішках"
+          loading="lazy"
+          decoding="async"
+          data-rec="R-110,R-201,R-202"
+        />
+      </figure>
+    </div>
+  </Section>
+
+  <!-- 8. news -->
+  <Section id="news" class="news" rec="R-204">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <h2 class="h2">Життя ліцею</h2>
+        <a class="text-link" href="https://t.me/+8JLD4lPg0stkZTBi" target="_blank" rel="noopener noreferrer">Новини в Telegram</a>
+      </div>
+      <ol class="news__list" role="list">
+        {news.map((n) => (
+          <li class="news__item">
+            <time class="news__date" datetime={n.iso}>{n.date}</time>
+            <h3 class="news__title">{n.title}</h3>
+            <FutureLink note={SOON} class="news__more">Читати</FutureLink>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Section>
+
+  <!-- 9. contacts -->
+  <Section id="contacts" class="contacts">
+    <div class="container">
+      <h2 class="h2">Контакти</h2>
+      <a class="contacts__phone" href={PHONE_HREF}>{PHONE_DISPLAY}</a>
+      <div class="contacts__grid">
+        <div>
+          <p class="contacts__label">Пошта</p>
+          <a class="text-link" href={EMAIL_HREF}>{EMAIL}</a>
+        </div>
+        <div>
+          <p class="contacts__label">Адреса</p>
+          <p>{ADDRESS}. Ліцей PIPL Lyceum, Початкова школа PIPL, Дитячий садок GlobalKids.</p>
+        </div>
+        <div>
+          <p class="contacts__label">Навчальний день</p>
+          <p>08:30–19:00, повний день</p>
+        </div>
+        <div>
+          <p class="contacts__label">Соцмережі</p>
+          <ul class="contacts__socials" role="list" data-rec="S-R008">
+            {SOCIALS.map((s) => <li><a class="text-link" href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}
+          </ul>
+        </div>
+      </div>
+      <a class="btn btn--primary contacts__cta" href={PHONE_HREF}>Записатися на екскурсію</a>
+    </div>
+  </Section>
+
+  <Footer slot="footer" />
+
+  <div class="action-bar" data-rec="R-102,MR-004,G-R004" slot="footer">
+    <a class="action-bar__btn action-bar__btn--call" href={PHONE_HREF}>Подзвонити</a>
+    <a class="action-bar__btn action-bar__btn--tour" href={PHONE_HREF}>Екскурсія</a>
+  </div>
+
+  <div class="cookie" role="region" aria-label="Файли cookie" data-rec="R-103" hidden slot="footer">
+    <p class="cookie__text">Файли cookie для аналітики — лише з вашої згоди. <FutureLink note={SOON}>Політика cookie</FutureLink></p>
+    <div class="cookie__actions">
+      <button type="button" class="btn btn--primary btn--sm" data-consent="granted">Прийняти</button>
+      <button type="button" class="btn btn--secondary btn--sm" data-consent="denied">Відхилити</button>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Effects 3 and 4 (concept «Рух»): play once when the element enters the viewport.
+  const els = document.querySelectorAll<HTMLElement>("[data-inview]");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || !("IntersectionObserver" in window)) {
+    els.forEach((el) => el.classList.add("is-in"));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+    }, { threshold: 0.25 });
+    els.forEach((el) => io.observe(el));
+  }
+
+  // Mobile action bar: shown after the first screen.
+  const hero = document.getElementById("hero");
+  if (hero && "IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => {
+      document.documentElement.classList.toggle("past-hero", !e.isIntersecting);
+    }, { rootMargin: "-40% 0px 0px 0px" }).observe(hero);
+  }
+
+  // Cookie banner: choice is stored locally; the demo loads no trackers.
+  const banner = document.querySelector<HTMLElement>(".cookie");
+  const KEY = "pipl-consent";
+  let stored: string | null = null;
+  try { stored = localStorage.getItem(KEY); } catch { stored = null; }
+  if (banner && !stored) {
+    banner.hidden = false;
+    banner.querySelectorAll<HTMLButtonElement>("[data-consent]").forEach((b) => {
+      b.addEventListener("click", () => {
+        try { localStorage.setItem(KEY, b.dataset.consent ?? "denied"); } catch { /* storage unavailable */ }
+        banner.hidden = true;
+      });
+    });
+  }
+</script>

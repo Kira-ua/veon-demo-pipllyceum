@@ -1,0 +1,86 @@
+---
+// Signature of the page: grade scale 0–11 with the IB fork (design/concept.md, «Перший екран»).
+// Without JS every grade is an anchor to #programs; with JS a grade is a toggle that shows the answer line.
+import { GRADES, IB_ANSWER, DEFAULT_ANSWER } from "../data/site";
+---
+<div class="scale" data-scale>
+  <div class="scale__track">
+    <span class="scale__marker" aria-hidden="true"></span>
+    <ol class="scale__grades" role="list" aria-label="Класи від 0 до 11">
+      {GRADES.map((g, i) => (
+        <li class="scale__cell" style={`--i:${i}`}>
+          <a class="grade" href="#programs" data-grade={g.key} data-answer={g.answer}>
+            <span class="visually-hidden">{g.key === "0" ? "Нульовий" : g.key} клас: </span>
+            <span class="grade__num" aria-hidden="true">{g.label}</span>
+          </a>
+        </li>
+      ))}
+      <li class="scale__cell scale__cell--ib" style="--i:12">
+        <a class="grade grade--ib" href="#programs" data-grade="ib" data-answer={IB_ANSWER}>
+          <span class="grade__num">IB</span>
+        </a>
+      </li>
+    </ol>
+  </div>
+
+  <div class="scale__lanes">
+    <p class="lane lane--primary"><span class="lane__name">Початкова школа</span> <span class="lane__years">0–4 класи</span></p>
+    <p class="lane lane--lyceum"><span class="lane__name">Ліцей PIPL, українська програма</span> <span class="lane__years">5–11 класи</span></p>
+    <p class="lane lane--ib"><span class="lane__name">IB Diploma Programme</span> <span class="lane__years">англійською, 10–11</span></p>
+  </div>
+
+  <p class="scale__answer" aria-live="polite"><span class="scale__answer-text">{DEFAULT_ANSWER}</span> <a class="text-link" href="#programs">Програми</a></p>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-scale]");
+  if (root) {
+    const track = root.querySelector<HTMLElement>(".scale__track")!;
+    const marker = root.querySelector<HTMLElement>(".scale__marker")!;
+    const text = root.querySelector<HTMLElement>(".scale__answer-text")!;
+    const grades = Array.from(root.querySelectorAll<HTMLAnchorElement>(".grade"));
+    let current: HTMLAnchorElement | null = null;
+
+    grades.forEach((a) => {
+      a.setAttribute("role", "button");
+      a.setAttribute("aria-pressed", "false");
+    });
+
+    const place = (instant: boolean) => {
+      if (!current) return;
+      const cell = current.parentElement as HTMLElement;
+      const t = track.getBoundingClientRect();
+      const c = cell.getBoundingClientRect();
+      marker.classList.toggle("is-instant", instant);
+      marker.style.width = `${c.width}px`;
+      marker.style.height = `${c.height}px`;
+      marker.style.transform = `translate(${c.left - t.left}px, ${c.top - t.top}px)`;
+    };
+
+    const select = (a: HTMLAnchorElement) => {
+      const first = current === null;
+      const rowChanged = current !== null && current.parentElement!.offsetTop !== a.parentElement!.offsetTop;
+      current?.setAttribute("aria-pressed", "false");
+      current = a;
+      a.setAttribute("aria-pressed", "true");
+      root.classList.add("has-choice");
+      place(first || rowChanged);
+      text.classList.add("is-swapping");
+      window.setTimeout(() => {
+        text.textContent = a.dataset.answer ?? "";
+        text.classList.remove("is-swapping");
+      }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 120);
+    };
+
+    grades.forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        select(a);
+      });
+      a.addEventListener("keydown", (e) => {
+        if (e.key === " ") { e.preventDefault(); select(a); }
+      });
+    });
+    window.addEventListener("resize", () => place(true));
+  }
+</script>
